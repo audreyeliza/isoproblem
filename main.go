@@ -13,7 +13,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		log.Fatal("Usage: go run main.go ~/Desktop/output.iso")
+		log.Fatal("Usage: go run main.go <iso-file-path>")
 	}
 	isoPath := os.Args[1]
 
@@ -27,10 +27,12 @@ func main() {
 	}
 
 	//create unique output directory
+	outerDir := "parsed_iso"
 	isoName := filepath.Base(isoPath)
 	isoName = isoName[:len(isoName)-len(filepath.Ext(isoName))]
 	timestamp := time.Now().Format("20060102-150405")
-	targetDir := fmt.Sprintf("%s_extracted_%s", isoName, timestamp)
+	innerDir := fmt.Sprintf("%s_extracted_%s", isoName, timestamp)
+	targetDir := filepath.Join(outerDir, innerDir)
 
 	if err := os.MkdirAll(targetDir, 0755); err != nil {
 		log.Fatalf("Failed to create output directory: %v", err)
